@@ -1,6 +1,7 @@
 package conta.view;
 
 import conta.controller.CadastroController;
+import conta.model.dao.CategoriaDAO;
 import conta.model.dao.ContaDAO;
 import conta.model.dao.UsuarioDAO;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ public class MenuView {
 
     public MenuView() {
         // Inicializando o CadastroController com os DAOs
-        this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO());
+        this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO());
     }
 
     public void mostrarMenu() {  // Método para encapsular a lógica do menu
@@ -62,7 +63,7 @@ public class MenuView {
                 cadastrarUsuario();
                 break;
             case 2:
-//                cadastrarCategoria();
+                cadastrarCategoria();
                 break;
             case 3:
 //                cadastrarTransacao();
@@ -99,4 +100,22 @@ public class MenuView {
         cadastroController.cadastrarUsuario(nome, email, senha, tipoConta, saldoInicial);
         System.out.println("Cadastro realizado com sucesso!");
     }
+
+    private void cadastrarCategoria() {
+        System.out.println("\nCadastro de Categoria");
+
+        System.out.print("Tipo de Categoria: ");
+        String tipoCategoria = scanner.nextLine();
+
+        System.out.print("Informe o ID do Usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Informe a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        // Chamando o controller para cadastrar a categoria
+        cadastroController.cadastrarCategoria(tipoCategoria, usuarioId, senha);
+    }
+
 }

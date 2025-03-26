@@ -35,5 +35,33 @@ public class UsuarioDAO {
                 throw new RuntimeException("Erro ao cadastrar usuário", e);
             }
         }
+
+        public UsuarioModel buscarUsuarioPorId(int id) {
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+        UsuarioModel usuario = null;
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // Recuperando os dados do usuário
+                int usuarioId = rs.getInt("id");
+                String nome = rs.getString("nome");
+                String email = rs.getString("email");
+                String senha = rs.getString("senha");
+
+                // Criando o objeto UsuarioModel com os dados recuperados
+                usuario = new UsuarioModel(usuarioId, nome, email, senha, null);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar usuário", e);
+        }
+
+        return usuario;
     }
+
+}
 
