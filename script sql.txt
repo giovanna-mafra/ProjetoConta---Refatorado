@@ -1,0 +1,33 @@
+DROP DATABASE ContaFinanceira;
+CREATE DATABASE ContaFinanceira;
+USE ContaFinanceira;
+
+-- Tabela Conta
+CREATE TABLE conta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipoConta  VARCHAR(50) NOT NULL,
+    saldo DOUBLE NOT NULL
+);
+
+-- Tabela Usuario
+CREATE TABLE usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    conta_id INT NOT NULL,
+    FOREIGN KEY (conta_id) REFERENCES conta(id) ON DELETE CASCADE
+);
+
+CREATE TABLE categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipoCategoria VARCHAR(255) NOT NULL,
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+);
+
+
+
+SELECT * from usuario;
+SELECT * from conta;
+SELECT * from categoria;
