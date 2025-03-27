@@ -1,6 +1,7 @@
 package conta.view;
 
 import conta.controller.CadastroController;
+import conta.model.CategoriaModel;
 import conta.model.UsuarioModel;
 import conta.model.dao.CategoriaDAO;
 import conta.model.dao.ContaDAO;
@@ -20,7 +21,7 @@ public class MenuView {
     public MenuView() {
         // Inicializando o CadastroController com os DAOs
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
-        this.listarController = new ListarController(new UsuarioDAO());
+        this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
     }
 
     public void mostrarMenu() {  // Método para encapsular a lógica do menu
@@ -165,7 +166,7 @@ public class MenuView {
                 listarUsuarios();
                 break;
             case 2:
-//                cadastrarCategoria();
+                listarCategorias();
                 break;
             case 3:
 //                cadastrarTransacao();
@@ -188,6 +189,25 @@ public class MenuView {
             System.out.print("Tipo de Conta: " + usuario.getConta().getTipoConta() + " | ");
             System.out.print("Saldo: R$ " + usuario.getConta().getSaldo());
             System.out.println();  // Quebra a linha ao final de cada usuário
+        }
+    }
+
+    private void listarCategorias() {
+        System.out.println("\nLista de Categorias:");
+
+        // Chama o listarController para buscar as categorias
+        ListarController listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
+        List<CategoriaModel> categorias = listarController.listarCategorias();
+
+        // Exibe os dados das categorias em uma linha só
+        for (CategoriaModel categoria : categorias) {
+            System.out.print("ID: " + categoria.getId() + " | ");
+            System.out.print("Tipo de Categoria: " + categoria.getTipoCategoria() + " | ");
+            System.out.print("Usuário ID: " + categoria.getUsuario().getId() + " | ");
+            System.out.print("Nome do Usuário: " + categoria.getUsuario().getNome() + " | ");
+            System.out.print("Tipo de Conta: " + categoria.getUsuario().getConta().getTipoConta() + " | ");
+            System.out.print("Saldo: R$ " + categoria.getUsuario().getConta().getSaldo());
+            System.out.println();  // Quebra a linha ao final de cada categoria
         }
     }
 
