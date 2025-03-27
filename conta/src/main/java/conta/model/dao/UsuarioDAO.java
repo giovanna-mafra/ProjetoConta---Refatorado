@@ -105,6 +105,18 @@ public class UsuarioDAO {
 
         return usuarios;
     }
+
+    public void excluir(int usuarioId) {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, usuarioId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

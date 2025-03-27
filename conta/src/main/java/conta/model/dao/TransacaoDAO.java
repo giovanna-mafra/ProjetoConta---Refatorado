@@ -70,4 +70,16 @@ public class TransacaoDAO {
 
         return transacoes;
     }
+
+    public void excluirPorUsuarioId(int usuarioId) {
+        String sql = "DELETE FROM transacao WHERE usuario_id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, usuarioId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package conta.view;
 
 import conta.controller.CadastroController;
+import conta.controller.ExcluirController;
 import conta.model.CategoriaModel;
 import conta.model.TransacaoModel;
 import conta.model.UsuarioModel;
@@ -18,11 +19,15 @@ public class MenuView {
     private Scanner scanner = new Scanner(System.in);  // Inicializando o scanner
     private CadastroController cadastroController;  // Definindo o controller
     private ListarController listarController;
+    private ExcluirController excluirController;
+
 
     public MenuView() {
         // Inicializando o CadastroController com os DAOs
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
+        this.excluirController = new ExcluirController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
+
     }
 
     public void mostrarMenu() {  // Método para encapsular a lógica do menu
@@ -46,7 +51,7 @@ public class MenuView {
                     listar();
                     break;
                 case 3:
-//                    excluir();
+                    excluir();
                     break;
                 case 4:
 //                    atualizar();
@@ -233,6 +238,47 @@ public class MenuView {
                     System.out.println("ID: " + transacao.getId() + " | Tipo: " + transacao.getTipoTransacao() + " | Valor: R$ " + transacao.getValor());
                 }
             }
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void excluir() {
+        System.out.println("\nEscolha o que deseja excluir:");
+        System.out.println("1. Usuário");
+        System.out.println("2. Categoria");
+        System.out.println("3. Transação");
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (escolha) {
+            case 1:
+                excluirUsuario();
+                break;
+            case 2:
+//                excluirCategoria();
+                break;
+            case 3:
+//                excluirTransacao();
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+    }
+
+    private void excluirUsuario() {
+        System.out.println("\nExcluir Usuário");
+
+        System.out.print("Informe o ID do Usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Informe a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        try {
+            // Chamando o ExcluirController para excluir o usuário e suas categorias e transações
+            excluirController.excluirUsuario(usuarioId, senha);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }

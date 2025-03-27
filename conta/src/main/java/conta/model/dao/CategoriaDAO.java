@@ -64,4 +64,16 @@ public class CategoriaDAO {
 
         return categorias;
     }
+
+    public void excluirPorUsuarioId(int usuarioId) {
+        String sql = "DELETE FROM categoria WHERE usuario_id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, usuarioId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

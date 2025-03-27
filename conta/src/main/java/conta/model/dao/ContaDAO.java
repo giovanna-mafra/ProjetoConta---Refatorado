@@ -21,4 +21,17 @@ public class ContaDAO {
             throw new RuntimeException("Erro ao cadastrar conta", e);
         }
     }
+
+    public void excluirPorUsuarioId(int usuarioId) {
+        String sql = "DELETE FROM conta WHERE id = (SELECT conta_id FROM usuario WHERE id = ?)";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, usuarioId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
