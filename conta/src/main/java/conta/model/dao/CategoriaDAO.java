@@ -76,4 +76,23 @@ public class CategoriaDAO {
             e.printStackTrace();
         }
     }
+
+
+
+    public boolean excluir(int categoriaId) {
+        String sql = "DELETE FROM categoria WHERE id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, categoriaId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Retorna true se a categoria foi excluída com sucesso
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // Retorna false em caso de erro
+        }
+    }
+
 }

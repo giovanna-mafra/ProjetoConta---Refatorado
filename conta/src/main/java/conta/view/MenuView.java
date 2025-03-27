@@ -256,7 +256,7 @@ public class MenuView {
                 excluirUsuario();
                 break;
             case 2:
-//                excluirCategoria();
+                excluirCategoria();
                 break;
             case 3:
 //                excluirTransacao();
@@ -283,5 +283,31 @@ public class MenuView {
             System.out.println(e.getMessage());
         }
     }
+
+    private void excluirCategoria() {
+        System.out.println("\nExclusão de Categoria");
+
+        System.out.print("Informe o ID da categoria a ser excluída: ");
+        int categoriaId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+
+        System.out.print("Informe o ID do usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+
+        System.out.print("Informe a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        // Chamada corrigida para o método excluirCategoria, com os 3 parâmetros necessários
+        boolean sucesso = excluirController.excluirCategoria(categoriaId, usuarioId, senha);
+
+        if (sucesso) {
+            System.out.println("Categoria excluída com sucesso!");
+        } else {
+            System.out.println("Falha ao excluir categoria.");
+        }
+    }
+
+
 
 }

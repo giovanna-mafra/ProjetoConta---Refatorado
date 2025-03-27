@@ -1,5 +1,6 @@
 package conta.controller;
 
+import conta.model.UsuarioModel;
 import conta.model.dao.CategoriaDAO;
 import conta.model.dao.TransacaoDAO;
 import conta.model.dao.UsuarioDAO;
@@ -45,4 +46,17 @@ public class ExcluirController {
 
         System.out.println("Usuário, sua conta, categorias e transações foram excluídos com sucesso!");
     }
+
+    public boolean excluirCategoria(int categoriaId, int usuarioId, String senha) {
+        // Verificar se o usuário existe e a senha está correta
+        UsuarioModel usuario = usuarioDAO.buscarUsuarioPorId(usuarioId);
+        if (usuario == null || !usuario.getSenha().equals(senha)) {
+            System.out.println("Senha incorreta ou usuário não encontrado.");
+            return false;
+        }
+
+        // Se o usuário for válido, excluir a categoria
+        return categoriaDAO.excluir(categoriaId);
+    }
+
 }
