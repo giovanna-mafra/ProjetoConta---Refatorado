@@ -82,4 +82,20 @@ public class TransacaoDAO {
             e.printStackTrace();
         }
     }
+
+    public boolean excluirTransacao(int transacaoId) {
+        String sql = "DELETE FROM transacao WHERE id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, transacaoId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Retorna true se a transação foi excluída com sucesso
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // Retorna false em caso de erro
+        }
+    }
 }

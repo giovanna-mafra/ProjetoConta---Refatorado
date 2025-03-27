@@ -59,4 +59,15 @@ public class ExcluirController {
         return categoriaDAO.excluir(categoriaId);
     }
 
+    public boolean excluirTransacao(int transacaoId, int usuarioId, String senha) {
+        // Verificar se o usuário existe e a senha está correta
+        UsuarioModel usuario = usuarioDAO.buscarUsuarioPorId(usuarioId);
+        if (usuario == null || !usuario.getSenha().equals(senha)) {
+            return false;  // Senha incorreta ou usuário não encontrado
+        }
+
+        // Se a senha for correta, excluir a transação
+        return transacaoDAO.excluirTransacao(transacaoId);
+    }
+
 }

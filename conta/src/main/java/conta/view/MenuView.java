@@ -259,7 +259,7 @@ public class MenuView {
                 excluirCategoria();
                 break;
             case 3:
-//                excluirTransacao();
+                excluirTransacao();
                 break;
             default:
                 System.out.println("Opção inválida!");
@@ -305,6 +305,26 @@ public class MenuView {
             System.out.println("Categoria excluída com sucesso!");
         } else {
             System.out.println("Falha ao excluir categoria.");
+        }
+    }
+
+    private void excluirTransacao() {
+        System.out.print("Informe o ID da transação que deseja excluir: ");
+        int transacaoId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Informe o ID do usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Informe a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        boolean sucesso = excluirController.excluirTransacao(transacaoId, usuarioId, senha);
+        if (sucesso) {
+            System.out.println("Transação excluída com sucesso!");
+        } else {
+            System.out.println("Erro ao excluir a transação. Verifique os dados fornecidos.");
         }
     }
 
