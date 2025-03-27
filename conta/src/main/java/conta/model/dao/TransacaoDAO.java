@@ -5,7 +5,10 @@ import conta.model.UsuarioModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransacaoDAO {
 
@@ -36,5 +39,35 @@ public class TransacaoDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao atualizar saldo", e);
         }
+    }
+
+    public List<TransacaoModel> listarTransacoesPorUsuario(int usuarioId) {
+        String sql = "SELECT t.id, t.valor, t.tipoTransacao, u.id AS usuario_id " +
+                "FROM transacao t " +
+                "INNER JOIN usuario u ON t.usuario_id = u.id " +
+                "WHERE u.id = ?";
+        List<TransacaoModel> transacoes = new ArrayList<>();
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, usuarioId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                double valor = rs.getDouble("valor");
+                String tipoTransacao = rs.getString("tipoTransacao");
+
+                // Recriar o modelo de transação, incluindo o usuário
+                UsuarioModel usuario = new UsuarioModel(usuarioId, "", "", "", null);
+                TransacaoModel transacao = new TransacaoModel(id, valor, tipoTransacao, usuario);
+                transacoes.add(transacao);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar transações", e);
+        }
+
+        return transacoes;
     }
 }

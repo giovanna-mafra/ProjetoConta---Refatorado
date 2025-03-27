@@ -1,6 +1,7 @@
 package conta.controller;
 
 import conta.model.CategoriaModel;
+import conta.model.TransacaoModel;
 import conta.model.UsuarioModel;
 import conta.model.dao.CategoriaDAO;
 import conta.model.dao.ContaDAO;
@@ -30,4 +31,16 @@ public class ListarController {
         // Chamando o DAO para buscar todas as categorias
         return categoriaDAO.listarCategorias();
     }
+
+    public List<TransacaoModel> listarTransacoesPorUsuario(int usuarioId, String senha) {
+        // Verifica se a senha informada é correta
+        UsuarioModel usuario = usuarioDAO.buscarUsuarioPorId(usuarioId);
+
+        if (usuario != null && usuario.getSenha().equals(senha)) {
+            return transacaoDAO.listarTransacoesPorUsuario(usuarioId);
+        } else {
+            throw new RuntimeException("Senha incorreta ou usuário não encontrado.");
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package conta.view;
 
 import conta.controller.CadastroController;
 import conta.model.CategoriaModel;
+import conta.model.TransacaoModel;
 import conta.model.UsuarioModel;
 import conta.model.dao.CategoriaDAO;
 import conta.model.dao.ContaDAO;
@@ -154,7 +155,7 @@ public class MenuView {
     }
 
     private void listar() {
-        System.out.println("\nEscolha o que deseja cadastrar:");
+        System.out.println("\nEscolha o que deseja listar:");
         System.out.println("1. Usuário");
         System.out.println("2. Categoria");
         System.out.println("3. Transação");
@@ -169,7 +170,7 @@ public class MenuView {
                 listarCategorias();
                 break;
             case 3:
-//                cadastrarTransacao();
+                listarTransacoes();
                 break;
             default:
                 System.out.println("Opção inválida!");
@@ -208,6 +209,32 @@ public class MenuView {
             System.out.print("Tipo de Conta: " + categoria.getUsuario().getConta().getTipoConta() + " | ");
             System.out.print("Saldo: R$ " + categoria.getUsuario().getConta().getSaldo());
             System.out.println();  // Quebra a linha ao final de cada categoria
+        }
+    }
+
+    private void listarTransacoes() {
+        System.out.println("\nLista de Transações");
+
+        System.out.print("Informe o ID do Usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Informe a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        try {
+            // Chamando o listarController para buscar as transações do usuário
+            List<TransacaoModel> transacoes = listarController.listarTransacoesPorUsuario(usuarioId, senha);
+
+            if (transacoes.isEmpty()) {
+                System.out.println("Nenhuma transação encontrada para o usuário.");
+            } else {
+                for (TransacaoModel transacao : transacoes) {
+                    System.out.println("ID: " + transacao.getId() + " | Tipo: " + transacao.getTipoTransacao() + " | Valor: R$ " + transacao.getValor());
+                }
+            }
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
         }
     }
 
