@@ -117,6 +117,26 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
+
+    public boolean atualizarUsuario(UsuarioModel usuario) {
+        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
+
+        try (Connection connection = ConexaoBD.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) { // Corrigido para preparar a instrução SQL
+
+            stmt.setString(1, usuario.getNome());
+            stmt.setString(2, usuario.getEmail());
+            stmt.setString(3, usuario.getSenha());
+            stmt.setInt(4, usuario.getId());
+
+            int rowsUpdated = stmt.executeUpdate(); // Executa a atualização
+            return rowsUpdated > 0; // Retorna verdadeiro se houver atualização
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
 
 

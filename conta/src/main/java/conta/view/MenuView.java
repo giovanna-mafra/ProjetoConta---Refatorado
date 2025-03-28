@@ -1,5 +1,6 @@
 package conta.view;
 
+import conta.controller.AtualizarController;
 import conta.controller.CadastroController;
 import conta.controller.ExcluirController;
 import conta.model.CategoriaModel;
@@ -20,6 +21,8 @@ public class MenuView {
     private CadastroController cadastroController;  // Definindo o controller
     private ListarController listarController;
     private ExcluirController excluirController;
+    private AtualizarController atualizarController;
+
 
 
     public MenuView() {
@@ -27,6 +30,8 @@ public class MenuView {
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.excluirController = new ExcluirController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
+        this.atualizarController = new AtualizarController(new UsuarioDAO(), new ContaDAO());
+
 
     }
 
@@ -54,7 +59,7 @@ public class MenuView {
                     excluir();
                     break;
                 case 4:
-//                    atualizar();
+                    atualizar();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -327,6 +332,67 @@ public class MenuView {
             System.out.println("Erro ao excluir a transação. Verifique os dados fornecidos.");
         }
     }
+
+    private void atualizar() {
+        System.out.println("\nEscolha o que deseja atualizar:");
+        System.out.println("1. Usuário");
+        System.out.println("2. Categoria");
+        System.out.println("3. Transação");
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (escolha) {
+            case 1:
+                atualizarUsuario();
+                break;
+            case 2:
+//                atualizarCategoria();
+                break;
+            case 3:
+//                atualizarTransacao();
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+    }
+
+    private void atualizarUsuario() {
+        System.out.println("\nAtualizar Usuário");
+
+        System.out.print("Informe o ID do Usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine();  // Consumir a quebra de linha restante
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+
+        System.out.println("Escolha o tipo de conta:");
+        System.out.println("1. Corrente");
+        System.out.println("2. Poupança");
+        int tipoContaOpcao = scanner.nextInt();
+        scanner.nextLine(); // Consumindo a quebra de linha
+
+        String tipoConta = tipoContaOpcao == 1 ? "Corrente" : "Poupança";
+
+        System.out.print("Informe o saldo: R$ ");
+        double saldo = scanner.nextDouble();
+
+        // Chamando o controller para atualizar os dados
+        boolean sucesso = atualizarController.atualizarUsuario(usuarioId, nome, email, senha, tipoConta, saldo);
+
+        if (sucesso) {
+            System.out.println("Usuário e conta atualizados com sucesso!");
+        } else {
+            System.out.println("Falha ao atualizar usuário e conta.");
+        }
+    }
+
 
 
 
