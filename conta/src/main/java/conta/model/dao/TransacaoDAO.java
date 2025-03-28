@@ -59,7 +59,6 @@ public class TransacaoDAO {
                 double valor = rs.getDouble("valor");
                 String tipoTransacao = rs.getString("tipoTransacao");
 
-                // Recriar o modelo de transação, incluindo o usuário
                 UsuarioModel usuario = new UsuarioModel(usuarioId, "", "", "", null);
                 TransacaoModel transacao = new TransacaoModel(id, valor, tipoTransacao, usuario);
                 transacoes.add(transacao);
@@ -92,10 +91,10 @@ public class TransacaoDAO {
             stmt.setInt(1, transacaoId);
 
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;  // Retorna true se a transação foi excluída com sucesso
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;  // Retorna false em caso de erro
+            return false;
         }
     }
 
@@ -118,7 +117,7 @@ public class TransacaoDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Caso não encontre a transação
+        return null;
     }
 
     public boolean atualizarTransacao(TransacaoModel transacao) {
@@ -130,7 +129,7 @@ public class TransacaoDAO {
             stmt.setInt(3, transacao.getId());
 
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Retorna true se a atualização foi bem-sucedida
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

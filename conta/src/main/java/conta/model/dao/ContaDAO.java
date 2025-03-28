@@ -38,14 +38,14 @@ public class ContaDAO {
         String sql = "UPDATE conta SET tipoConta = ?, saldo = ? WHERE id = ?";
 
         try (Connection connection = ConexaoBD.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) { // Corrigido para preparar a instrução SQL
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, conta.getTipoConta());
             stmt.setDouble(2, conta.getSaldo());
             stmt.setInt(3, conta.getId());
 
-            int rowsUpdated = stmt.executeUpdate(); // Executa a atualização
-            return rowsUpdated > 0; // Retorna verdadeiro se houver atualização
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

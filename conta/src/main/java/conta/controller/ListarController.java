@@ -22,18 +22,17 @@ public class ListarController {
         this.transacaoDAO = transacaoDAO;    }
 
 
-    // Método que retorna a lista de usuários
     public List<UsuarioModel> listarUsuarios() {
         return usuarioDAO.buscarTodosUsuarios();
     }
 
     public List<CategoriaModel> listarCategorias() {
-        // Chamando o DAO para buscar todas as categorias
+
         return categoriaDAO.listarCategorias();
     }
 
     public List<TransacaoModel> listarTransacoesPorUsuario(int usuarioId, String senha) {
-        // Verifica se a senha informada é correta
+
         UsuarioModel usuario = usuarioDAO.buscarUsuarioPorId(usuarioId);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {

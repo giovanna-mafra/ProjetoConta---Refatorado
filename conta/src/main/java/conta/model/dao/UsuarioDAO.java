@@ -13,23 +13,23 @@ public class UsuarioDAO {
         String sqlUsuario = "INSERT INTO usuario (nome, email, senha, conta_id) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection()) {
-            // Cadastrar a conta
+
             try (PreparedStatement stmtConta = conn.prepareStatement(sqlConta, Statement.RETURN_GENERATED_KEYS)) {
                 stmtConta.setString(1, usuario.getConta().getTipoConta());
                 stmtConta.setDouble(2, usuario.getConta().getSaldo());
                 stmtConta.executeUpdate();
 
-                // Obter o id da conta inserida
+
                 ResultSet rs = stmtConta.getGeneratedKeys();
                 if (rs.next()) {
-                    int contaId = rs.getInt(1); // Id da conta inserida
+                    int contaId = rs.getInt(1);
 
-                    // Agora cadastrar o usuário com o id da conta
+
                     try (PreparedStatement stmtUsuario = conn.prepareStatement(sqlUsuario)) {
                         stmtUsuario.setString(1, usuario.getNome());
                         stmtUsuario.setString(2, usuario.getEmail());
                         stmtUsuario.setString(3, usuario.getSenha());
-                        stmtUsuario.setInt(4, contaId); // Vinculando a conta_id ao usuário
+                        stmtUsuario.setInt(4, contaId);
                         stmtUsuario.executeUpdate();
                     }
                 }
@@ -122,15 +122,15 @@ public class UsuarioDAO {
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
 
         try (Connection connection = ConexaoBD.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) { // Corrigido para preparar a instrução SQL
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getSenha());
             stmt.setInt(4, usuario.getId());
 
-            int rowsUpdated = stmt.executeUpdate(); // Executa a atualização
-            return rowsUpdated > 0; // Retorna verdadeiro se houver atualização
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

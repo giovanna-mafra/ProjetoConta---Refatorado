@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuView {
-    private Scanner scanner = new Scanner(System.in);  // Inicializando o scanner
-    private CadastroController cadastroController;  // Definindo o controller
+    private Scanner scanner = new Scanner(System.in);
+    private CadastroController cadastroController;
     private ListarController listarController;
     private ExcluirController excluirController;
     private AtualizarController atualizarController;
@@ -26,7 +26,7 @@ public class MenuView {
 
 
     public MenuView() {
-        // Inicializando o CadastroController com os DAOs
+
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.excluirController = new ExcluirController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
@@ -35,7 +35,7 @@ public class MenuView {
 
     }
 
-    public void mostrarMenu() {  // Método para encapsular a lógica do menu
+    public void mostrarMenu() {
         int opcao;
         do {
             System.out.println("\n=== MENU ===");
@@ -46,7 +46,7 @@ public class MenuView {
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine();  // Consumir a quebra de linha restante
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -76,7 +76,7 @@ public class MenuView {
         System.out.println("2. Categoria");
         System.out.println("3. Transação");
         int escolha = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         switch (escolha) {
             case 1:
@@ -109,14 +109,14 @@ public class MenuView {
         System.out.println("1. Corrente");
         System.out.println("2. Poupança");
         int tipoContaOpcao = scanner.nextInt();
-        scanner.nextLine(); // Consumindo a quebra de linha
+        scanner.nextLine();
 
         String tipoConta = tipoContaOpcao == 1 ? "Corrente" : "Poupança";
 
         System.out.print("Informe o saldo inicial: R$ ");
         double saldoInicial = scanner.nextDouble();
 
-        // Chamando o controller para cadastrar
+
         cadastroController.cadastrarUsuario(nome, email, senha, tipoConta, saldoInicial);
         System.out.println("Cadastro realizado com sucesso!");
     }
@@ -129,12 +129,11 @@ public class MenuView {
 
         System.out.print("Informe o ID do Usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
 
-        // Chamando o controller para cadastrar a categoria
         cadastroController.cadastrarCategoria(tipoCategoria, usuarioId, senha);
     }
 
@@ -143,24 +142,24 @@ public class MenuView {
 
         System.out.print("Informe o valor: R$ ");
         double valor = scanner.nextDouble();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.println("Escolha o tipo de transação:");
         System.out.println("1. Despesa");
         System.out.println("2. Receita");
         int tipoTransacaoOpcao = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         String tipoTransacao = tipoTransacaoOpcao == 1 ? "Despesa" : "Receita";
 
         System.out.print("Informe o ID do Usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
 
-        // Chamando o controller para cadastrar a transação
+
         cadastroController.cadastrarTransacao(valor, tipoTransacao, usuarioId, senha);
     }
 
@@ -170,7 +169,7 @@ public class MenuView {
         System.out.println("2. Categoria");
         System.out.println("3. Transação");
         int escolha = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         switch (escolha) {
             case 1:
@@ -190,27 +189,24 @@ public class MenuView {
     private void listarUsuarios() {
         System.out.println("\nLista de Usuários:");
 
-        // Chama o listarController para buscar os usuários
         List<UsuarioModel> usuarios = listarController.listarUsuarios();
-        // Exibe os dados dos usuários
+
         for (UsuarioModel usuario : usuarios) {
             System.out.print("ID: " + usuario.getId() + " | ");
             System.out.print("Nome: " + usuario.getNome() + " | ");
             System.out.print("Email: " + usuario.getEmail() + " | ");
             System.out.print("Tipo de Conta: " + usuario.getConta().getTipoConta() + " | ");
             System.out.print("Saldo: R$ " + usuario.getConta().getSaldo());
-            System.out.println();  // Quebra a linha ao final de cada usuário
+            System.out.println();
         }
     }
 
     private void listarCategorias() {
         System.out.println("\nLista de Categorias:");
 
-        // Chama o listarController para buscar as categorias
         ListarController listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         List<CategoriaModel> categorias = listarController.listarCategorias();
 
-        // Exibe os dados das categorias em uma linha só
         for (CategoriaModel categoria : categorias) {
             System.out.print("ID: " + categoria.getId() + " | ");
             System.out.print("Tipo de Categoria: " + categoria.getTipoCategoria() + " | ");
@@ -218,7 +214,7 @@ public class MenuView {
             System.out.print("Nome do Usuário: " + categoria.getUsuario().getNome() + " | ");
             System.out.print("Tipo de Conta: " + categoria.getUsuario().getConta().getTipoConta() + " | ");
             System.out.print("Saldo: R$ " + categoria.getUsuario().getConta().getSaldo());
-            System.out.println();  // Quebra a linha ao final de cada categoria
+            System.out.println();
         }
     }
 
@@ -227,13 +223,13 @@ public class MenuView {
 
         System.out.print("Informe o ID do Usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
 
         try {
-            // Chamando o listarController para buscar as transações do usuário
+
             List<TransacaoModel> transacoes = listarController.listarTransacoesPorUsuario(usuarioId, senha);
 
             if (transacoes.isEmpty()) {
@@ -276,13 +272,13 @@ public class MenuView {
 
         System.out.print("Informe o ID do Usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
 
         try {
-            // Chamando o ExcluirController para excluir o usuário e suas categorias e transações
+
             excluirController.excluirUsuario(usuarioId, senha);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -294,16 +290,15 @@ public class MenuView {
 
         System.out.print("Informe o ID da categoria a ser excluída: ");
         int categoriaId = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha
+        scanner.nextLine();
 
         System.out.print("Informe o ID do usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha
-
+        scanner.nextLine();
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
 
-        // Chamada corrigida para o método excluirCategoria, com os 3 parâmetros necessários
+
         boolean sucesso = excluirController.excluirCategoria(categoriaId, usuarioId, senha);
 
         if (sucesso) {
@@ -316,11 +311,11 @@ public class MenuView {
     private void excluirTransacao() {
         System.out.print("Informe o ID da transação que deseja excluir: ");
         int transacaoId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe o ID do usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Informe a senha do usuário: ");
         String senha = scanner.nextLine();
@@ -361,7 +356,7 @@ public class MenuView {
 
         System.out.print("Informe o ID do Usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha restante
+        scanner.nextLine();
 
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
@@ -376,14 +371,14 @@ public class MenuView {
         System.out.println("1. Corrente");
         System.out.println("2. Poupança");
         int tipoContaOpcao = scanner.nextInt();
-        scanner.nextLine(); // Consumindo a quebra de linha
+        scanner.nextLine();
 
         String tipoConta = tipoContaOpcao == 1 ? "Corrente" : "Poupança";
 
         System.out.print("Informe o saldo: R$ ");
         double saldo = scanner.nextDouble();
 
-        // Chamando o controller para atualizar os dados
+
         boolean sucesso = atualizarController.atualizarUsuario(usuarioId, nome, email, senha, tipoConta, saldo);
 
         if (sucesso) {
@@ -396,7 +391,7 @@ public class MenuView {
     public void atualizarCategoria() {
         System.out.print("Digite o ID do usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine(); // Consumir a nova linha após o número
+        scanner.nextLine();
 
         System.out.print("Digite a senha do usuário: ");
         String senha = scanner.nextLine();
@@ -416,23 +411,22 @@ public class MenuView {
     public void atualizarTransacao() {
         System.out.print("Digite o ID do usuário: ");
         int usuarioId = scanner.nextInt();
-        scanner.nextLine(); // Consumir a nova linha após o número
+        scanner.nextLine();
 
         System.out.print("Digite a senha do usuário: ");
         String senha = scanner.nextLine();
 
         System.out.print("Digite o ID da transação: ");
         int transacaoId = scanner.nextInt();
-        scanner.nextLine(); // Consumir a nova linha
+        scanner.nextLine();
 
         System.out.print("Digite o novo valor da transação: ");
         double novoValor = scanner.nextDouble();
-        scanner.nextLine(); // Consumir a nova linha
+        scanner.nextLine();
 
         System.out.print("Digite o novo tipo de transação: ");
         String novoTipoTransacao = scanner.nextLine();
 
-        // Passa os parâmetros para o Controller para atualizar a transação
         boolean resultado = atualizarController.atualizarTransacao(usuarioId, senha, transacaoId, novoValor, novoTipoTransacao);
 
         if (resultado) {

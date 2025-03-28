@@ -88,10 +88,10 @@ public class CategoriaDAO {
             stmt.setInt(1, categoriaId);
 
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;  // Retorna true se a categoria foi excluída com sucesso
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;  // Retorna false em caso de erro
+            return false;
         }
     }
 
@@ -113,10 +113,10 @@ public class CategoriaDAO {
             throw new RuntimeException("Erro ao buscar categoria do usuário", e);
         }
 
-        return null;  // Caso não encontre
+        return null;
     }
 
-    // Atualizar categoria
+
     public boolean atualizarCategoria(CategoriaModel categoria) {
         String sql = "UPDATE categoria SET tipoCategoria = ? WHERE id = ?";
 

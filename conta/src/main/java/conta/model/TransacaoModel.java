@@ -3,7 +3,7 @@ package conta.model;
 public class TransacaoModel {
     private int id;
     private double valor;
-    private String tipoTransacao; // 'Despesa' ou 'Receita'
+    private String tipoTransacao;
     private UsuarioModel usuario;
 
     public TransacaoModel(int id, double valor, String tipoTransacao, UsuarioModel usuario) {
