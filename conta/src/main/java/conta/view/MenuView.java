@@ -30,7 +30,7 @@ public class MenuView {
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.excluirController = new ExcluirController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
-        this.atualizarController = new AtualizarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO());
+        this.atualizarController = new AtualizarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
 
 
     }
@@ -349,7 +349,7 @@ public class MenuView {
                 atualizarCategoria();
                 break;
             case 3:
-//                atualizarTransacao();
+                atualizarTransacao();
                 break;
             default:
                 System.out.println("Opção inválida!");
@@ -410,6 +410,35 @@ public class MenuView {
             System.out.println("Categoria atualizada com sucesso!");
         } else {
             System.out.println("Falha ao atualizar a categoria.");
+        }
+    }
+
+    public void atualizarTransacao() {
+        System.out.print("Digite o ID do usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha após o número
+
+        System.out.print("Digite a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        System.out.print("Digite o ID da transação: ");
+        int transacaoId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha
+
+        System.out.print("Digite o novo valor da transação: ");
+        double novoValor = scanner.nextDouble();
+        scanner.nextLine(); // Consumir a nova linha
+
+        System.out.print("Digite o novo tipo de transação: ");
+        String novoTipoTransacao = scanner.nextLine();
+
+        // Passa os parâmetros para o Controller para atualizar a transação
+        boolean resultado = atualizarController.atualizarTransacao(usuarioId, senha, transacaoId, novoValor, novoTipoTransacao);
+
+        if (resultado) {
+            System.out.println("Transação atualizada com sucesso!");
+        } else {
+            System.out.println("Falha ao atualizar a transação.");
         }
     }
 

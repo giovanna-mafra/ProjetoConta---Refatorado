@@ -98,4 +98,42 @@ public class TransacaoDAO {
             return false;  // Retorna false em caso de erro
         }
     }
+
+    public TransacaoModel buscarTransacaoPorId(int transacaoId) {
+        String sql = "SELECT * FROM transacao WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, transacaoId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                double valor = rs.getDouble("valor");
+                String tipoTransacao = rs.getString("tipoTransacao");
+                int usuarioId = rs.getInt("usuario_id");
+
+                UsuarioModel usuario = new UsuarioModel(usuarioId, "", "", "", null);
+                return new TransacaoModel(id, valor, tipoTransacao, usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Caso não encontre a transação
+    }
+
+    public boolean atualizarTransacao(TransacaoModel transacao) {
+        String sql = "UPDATE transacao SET valor = ?, tipoTransacao = ? WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, transacao.getValor());
+            stmt.setString(2, transacao.getTipoTransacao());
+            stmt.setInt(3, transacao.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Retorna true se a atualização foi bem-sucedida
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
