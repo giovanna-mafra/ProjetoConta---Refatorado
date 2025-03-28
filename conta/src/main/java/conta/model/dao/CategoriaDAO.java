@@ -95,4 +95,42 @@ public class CategoriaDAO {
         }
     }
 
+    public CategoriaModel buscarCategoriaPorUsuarioId(int usuarioId) {
+        String sql = "SELECT id, tipoCategoria FROM categoria WHERE usuario_id = ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, usuarioId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int categoriaId = rs.getInt("id");
+                String tipoCategoria = rs.getString("tipoCategoria");
+
+                return new CategoriaModel(categoriaId, tipoCategoria, null);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar categoria do usuário", e);
+        }
+
+        return null;  // Caso não encontre
+    }
+
+    // Atualizar categoria
+    public boolean atualizarCategoria(CategoriaModel categoria) {
+        String sql = "UPDATE categoria SET tipoCategoria = ? WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, categoria.getTipoCategoria());
+            stmt.setInt(2, categoria.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

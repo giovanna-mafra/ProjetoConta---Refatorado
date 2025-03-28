@@ -30,7 +30,7 @@ public class MenuView {
         this.cadastroController = new CadastroController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.listarController = new ListarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
         this.excluirController = new ExcluirController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO(), new TransacaoDAO());
-        this.atualizarController = new AtualizarController(new UsuarioDAO(), new ContaDAO());
+        this.atualizarController = new AtualizarController(new UsuarioDAO(), new ContaDAO(), new CategoriaDAO());
 
 
     }
@@ -346,7 +346,7 @@ public class MenuView {
                 atualizarUsuario();
                 break;
             case 2:
-//                atualizarCategoria();
+                atualizarCategoria();
                 break;
             case 3:
 //                atualizarTransacao();
@@ -390,6 +390,26 @@ public class MenuView {
             System.out.println("Usuário e conta atualizados com sucesso!");
         } else {
             System.out.println("Falha ao atualizar usuário e conta.");
+        }
+    }
+
+    public void atualizarCategoria() {
+        System.out.print("Digite o ID do usuário: ");
+        int usuarioId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha após o número
+
+        System.out.print("Digite a senha do usuário: ");
+        String senha = scanner.nextLine();
+
+        System.out.print("Digite o novo tipo de categoria: ");
+        String novoTipoCategoria = scanner.nextLine();
+
+        boolean resultado = atualizarController.atualizarCategoria(usuarioId, senha, novoTipoCategoria);
+
+        if (resultado) {
+            System.out.println("Categoria atualizada com sucesso!");
+        } else {
+            System.out.println("Falha ao atualizar a categoria.");
         }
     }
 
