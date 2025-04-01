@@ -1,20 +1,20 @@
 package conta.model.dao;
 
-import conta.model.ContaModel;
 import conta.model.UsuarioModel;
+import conta.model.ContaModel;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO extends ConexaoBD {
+public class UsuarioDAO {
 
     // Método para cadastrar um usuário
     public void cadastrarUsuario(UsuarioModel usuario) {
         String sqlConta = "INSERT INTO conta (tipoConta, saldo) VALUES (?, ?)";
         String sqlUsuario = "INSERT INTO usuario (nome, email, senha, conta_id) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = getConnection()) {
+        try (Connection conn = ConexaoBD.getInstance().getConnection()) {
 
             // Inicia a transação de conta
             try (PreparedStatement stmtConta = conn.prepareStatement(sqlConta, Statement.RETURN_GENERATED_KEYS)) {
@@ -48,9 +48,10 @@ public class UsuarioDAO extends ConexaoBD {
                 + "FROM usuario u "
                 + "INNER JOIN conta c ON u.conta_id = c.id "
                 + "WHERE u.id = ?";
+
         UsuarioModel usuario = null;
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
@@ -84,7 +85,7 @@ public class UsuarioDAO extends ConexaoBD {
 
         List<UsuarioModel> usuarios = new ArrayList<>();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             ResultSet rs = stmt.executeQuery();
@@ -114,7 +115,7 @@ public class UsuarioDAO extends ConexaoBD {
     public void excluir(int usuarioId) {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, usuarioId);
             statement.executeUpdate();
@@ -127,7 +128,7 @@ public class UsuarioDAO extends ConexaoBD {
     public boolean atualizarUsuario(UsuarioModel usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getNome());

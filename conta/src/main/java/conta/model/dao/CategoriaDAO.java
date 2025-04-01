@@ -8,12 +8,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaDAO extends ConexaoBD {
+public class CategoriaDAO {
 
     public void cadastrarCategoria(CategoriaModel categoria) {
         String sql = "INSERT INTO categoria (tipoCategoria, usuario_id) VALUES (?, ?)";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, categoria.getTipoCategoria());
@@ -32,7 +32,7 @@ public class CategoriaDAO extends ConexaoBD {
 
         List<CategoriaModel> categorias = new ArrayList<>();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -65,10 +65,11 @@ public class CategoriaDAO extends ConexaoBD {
     public void excluirPorUsuarioId(int usuarioId) {
         String sql = "DELETE FROM categoria WHERE usuario_id = ?";
 
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, usuarioId);
-            statement.executeUpdate();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, usuarioId);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,8 +78,8 @@ public class CategoriaDAO extends ConexaoBD {
     public boolean excluir(int categoriaId) {
         String sql = "DELETE FROM categoria WHERE id = ?";
 
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, categoriaId);
 
@@ -93,7 +94,7 @@ public class CategoriaDAO extends ConexaoBD {
     public CategoriaModel buscarCategoriaPorUsuarioId(int usuarioId) {
         String sql = "SELECT id, tipoCategoria FROM categoria WHERE usuario_id = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, usuarioId);
             ResultSet rs = stmt.executeQuery();
@@ -114,8 +115,9 @@ public class CategoriaDAO extends ConexaoBD {
     public boolean atualizarCategoria(CategoriaModel categoria) {
         String sql = "UPDATE categoria SET tipoCategoria = ? WHERE id = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, categoria.getTipoCategoria());
             stmt.setInt(2, categoria.getId());
 

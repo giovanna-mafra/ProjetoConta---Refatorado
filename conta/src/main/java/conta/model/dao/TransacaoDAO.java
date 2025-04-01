@@ -7,13 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransacaoDAO extends ConexaoBD {
+public class TransacaoDAO {
 
     // Método para cadastrar uma transação
     public void cadastrarTransacao(TransacaoModel transacao) {
         String sql = "INSERT INTO transacao (valor, tipoTransacao, usuario_id) VALUES (?, ?, ?)";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, transacao.getValor());
@@ -29,7 +29,7 @@ public class TransacaoDAO extends ConexaoBD {
     public void atualizarSaldo(UsuarioModel usuario, double valor) {
         String sql = "UPDATE conta SET saldo = ? WHERE id = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, valor);
@@ -48,7 +48,7 @@ public class TransacaoDAO extends ConexaoBD {
                 "WHERE u.id = ?";
         List<TransacaoModel> transacoes = new ArrayList<>();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, usuarioId);
@@ -74,7 +74,7 @@ public class TransacaoDAO extends ConexaoBD {
     public void excluirPorUsuarioId(int usuarioId) {
         String sql = "DELETE FROM transacao WHERE usuario_id = ?";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, usuarioId);
             statement.executeUpdate();
@@ -87,7 +87,7 @@ public class TransacaoDAO extends ConexaoBD {
     public boolean excluirTransacao(int transacaoId) {
         String sql = "DELETE FROM transacao WHERE id = ?";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, transacaoId);
@@ -103,7 +103,7 @@ public class TransacaoDAO extends ConexaoBD {
     // Método para buscar uma transação pelo ID
     public TransacaoModel buscarTransacaoPorId(int transacaoId) {
         String sql = "SELECT * FROM transacao WHERE id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, transacaoId);
             ResultSet rs = stmt.executeQuery();
@@ -126,7 +126,7 @@ public class TransacaoDAO extends ConexaoBD {
     // Método para atualizar uma transação
     public boolean atualizarTransacao(TransacaoModel transacao) {
         String sql = "UPDATE transacao SET valor = ?, tipoTransacao = ? WHERE id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = ConexaoBD.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDouble(1, transacao.getValor());
             stmt.setString(2, transacao.getTipoTransacao());
