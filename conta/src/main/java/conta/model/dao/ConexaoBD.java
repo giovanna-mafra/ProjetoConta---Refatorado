@@ -9,11 +9,8 @@ public class ConexaoBD {
     private static final String USER = "root";
     private static final String PASSWORD = "Nave31@03";
 
-    public static Connection getConnection() {
-        try {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao conectar ao banco de dados", e);
-        }
+    // Método protegido para obter conexão com o banco
+    protected Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }

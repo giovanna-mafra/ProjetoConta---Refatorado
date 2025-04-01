@@ -9,7 +9,7 @@ import conta.model.dao.ContaDAO;
 import conta.model.dao.TransacaoDAO;
 import conta.model.dao.UsuarioDAO;
 
-public class CadastroController {
+public class CadastroController  {
     private UsuarioDAO usuarioDAO;
     private ContaDAO contaDAO;
     private CategoriaDAO categoriaDAO;

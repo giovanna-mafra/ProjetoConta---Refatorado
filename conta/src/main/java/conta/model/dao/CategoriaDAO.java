@@ -4,19 +4,16 @@ import conta.model.CategoriaModel;
 import conta.model.ContaModel;
 import conta.model.UsuarioModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaDAO {
+public class CategoriaDAO extends ConexaoBD {
 
     public void cadastrarCategoria(CategoriaModel categoria) {
         String sql = "INSERT INTO categoria (tipoCategoria, usuario_id) VALUES (?, ?)";
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, categoria.getTipoCategoria());
@@ -35,7 +32,7 @@ public class CategoriaDAO {
 
         List<CategoriaModel> categorias = new ArrayList<>();
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -68,7 +65,7 @@ public class CategoriaDAO {
     public void excluirPorUsuarioId(int usuarioId) {
         String sql = "DELETE FROM categoria WHERE usuario_id = ?";
 
-        try (Connection connection = ConexaoBD.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, usuarioId);
             statement.executeUpdate();
@@ -77,12 +74,10 @@ public class CategoriaDAO {
         }
     }
 
-
-
     public boolean excluir(int categoriaId) {
         String sql = "DELETE FROM categoria WHERE id = ?";
 
-        try (Connection connection = ConexaoBD.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, categoriaId);
@@ -98,7 +93,7 @@ public class CategoriaDAO {
     public CategoriaModel buscarCategoriaPorUsuarioId(int usuarioId) {
         String sql = "SELECT id, tipoCategoria FROM categoria WHERE usuario_id = ?";
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, usuarioId);
             ResultSet rs = stmt.executeQuery();
@@ -116,11 +111,10 @@ public class CategoriaDAO {
         return null;
     }
 
-
     public boolean atualizarCategoria(CategoriaModel categoria) {
         String sql = "UPDATE categoria SET tipoCategoria = ? WHERE id = ?";
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, categoria.getTipoCategoria());
             stmt.setInt(2, categoria.getId());
@@ -132,5 +126,4 @@ public class CategoriaDAO {
             return false;
         }
     }
-
 }

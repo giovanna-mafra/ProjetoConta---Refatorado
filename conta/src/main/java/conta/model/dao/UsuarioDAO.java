@@ -7,24 +7,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO {
+public class UsuarioDAO extends ConexaoBD {
+
+    // Método para cadastrar um usuário
     public void cadastrarUsuario(UsuarioModel usuario) {
         String sqlConta = "INSERT INTO conta (tipoConta, saldo) VALUES (?, ?)";
         String sqlUsuario = "INSERT INTO usuario (nome, email, senha, conta_id) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = ConexaoBD.getConnection()) {
+        try (Connection conn = getConnection()) {
 
+            // Inicia a transação de conta
             try (PreparedStatement stmtConta = conn.prepareStatement(sqlConta, Statement.RETURN_GENERATED_KEYS)) {
                 stmtConta.setString(1, usuario.getConta().getTipoConta());
                 stmtConta.setDouble(2, usuario.getConta().getSaldo());
                 stmtConta.executeUpdate();
 
-
+                // Obtém o ID gerado da conta
                 ResultSet rs = stmtConta.getGeneratedKeys();
                 if (rs.next()) {
                     int contaId = rs.getInt(1);
 
-
+                    // Registra o usuário com o ID da conta
                     try (PreparedStatement stmtUsuario = conn.prepareStatement(sqlUsuario)) {
                         stmtUsuario.setString(1, usuario.getNome());
                         stmtUsuario.setString(2, usuario.getEmail());
@@ -39,7 +42,7 @@ public class UsuarioDAO {
         }
     }
 
-
+    // Método para buscar um usuário por ID
     public UsuarioModel buscarUsuarioPorId(int id) {
         String sql = "SELECT u.id AS usuario_id, u.nome, u.email, u.senha, c.id AS conta_id, c.tipoConta, c.saldo "
                 + "FROM usuario u "
@@ -47,7 +50,7 @@ public class UsuarioDAO {
                 + "WHERE u.id = ?";
         UsuarioModel usuario = null;
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
@@ -73,6 +76,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
+    // Método para buscar todos os usuários
     public List<UsuarioModel> buscarTodosUsuarios() {
         String sql = "SELECT u.id AS usuario_id, u.nome, u.email, u.senha, c.id AS conta_id, c.tipoConta, c.saldo "
                 + "FROM usuario u "
@@ -80,7 +84,7 @@ public class UsuarioDAO {
 
         List<UsuarioModel> usuarios = new ArrayList<>();
 
-        try (Connection conn = ConexaoBD.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             ResultSet rs = stmt.executeQuery();
@@ -106,10 +110,11 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+    // Método para excluir um usuário
     public void excluir(int usuarioId) {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
-        try (Connection connection = ConexaoBD.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, usuarioId);
             statement.executeUpdate();
@@ -118,10 +123,11 @@ public class UsuarioDAO {
         }
     }
 
+    // Método para atualizar um usuário
     public boolean atualizarUsuario(UsuarioModel usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
 
-        try (Connection connection = ConexaoBD.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getNome());
@@ -136,8 +142,4 @@ public class UsuarioDAO {
             return false;
         }
     }
-
 }
-
-
-
